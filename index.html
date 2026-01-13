@@ -15,6 +15,11 @@ body {
 h1 {
     text-align: center;
 }
+
+h2 {
+    text-align: center;
+}
+
 p {
     text-align: center;
 }
@@ -62,15 +67,16 @@ button:hover {
 <body>
 <img src="foto.jpg">
 
-<p>Jogo da Rodada: Tal</p>
+<h2>Jogo da Rodada: Tal</h2>
 <p>Regras: Tal</p>
 <p>pontuações válidas até dia XX/XX</p>
-
+<p>
+<p>
 
 <h1>TABELA DE CLASSIFICAÇÃO</h1>
 
 <div>
-    Nome:
+    Nome do Piloto:
     <input id="nome">
     Pontuação:
     <input id="pontuacao" type="number">
@@ -80,9 +86,9 @@ button:hover {
 <table>
     <thead>
         <tr>
-            <th>Participante</th>
+            <th>Piloto</th>
             <th>Pontuação</th>
-            <th>Ações</th>
+            <th>Excluir</th>
         </tr>
     </thead>
     <tbody id="tabela"></tbody>
@@ -179,5 +185,6 @@ carregar();
 </body>
 
 </html>
+
 
 
