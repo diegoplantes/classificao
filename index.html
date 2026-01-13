@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tabela de Classificação</title>
+
+<style>
+body {
+    background: #111;
+    color: #0f0;
+    font-family: "Courier New", monospace;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #0f0;
+    padding: 8px;
+    text-align: center;
+}
+
+input, button {
+    background: black;
+    color: #0f0;
+    border: 1px solid #0f0;
+    padding: 5px;
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0f0;
+    color: black;
+}
+</style>
+
+<!-- BIBLIOTECA DO SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<h1>TABELA DE CLASSIFICAÇÃO</h1>
+
+<div>
+    Nome:
+    <input id="nome">
+    Pontuação:
+    <input id="pontuacao" type="number">
+    <button onclick="adicionar()">Adicionar</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Participante</th>
+            <th>Pontuação</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody id="tabela"></tbody>
+</table>
+
+<script>
+/* CONFIGURAÇÃO DO SUPABASE */
+const SUPABASE_URL = "https://uxshocjdkvhplhodsgyw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_E7p2KBgBGeKPMyu5NAsY4g_q-Wa1BO3";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+/* CARREGAR DADOS */
+async function carregar() {
+    const { data, error } = await supabaseClient
+        .from("ranking")
+        .select("*")
+        .order("pontuacao", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    const tabela = document.getElementById("tabela");
+    tabela.innerHTML = "";
+
+    data.forEach(linha => {
+        tabela.innerHTML += `
+        <tr>
+            <td>
+                <input value="${linha.nome}"
+                onchange="editar(${linha.id}, this.value, null)">
+            </td>
+            <td>
+                <input type="number" value="${linha.pontuacao}"
+                onchange="editar(${linha.id}, null, this.value)">
+            </td>
+            <td>
+                <button onclick="excluir(${linha.id})">X</button>
+            </td>
+        </tr>`;
+    });
+}
+
+/* ADICIONAR */
+async function adicionar() {
+    const nome = document.getElementById("nome").value;
+    const pontuacao = document.getElementById("pontuacao").value;
+
+    if (!nome || !pontuacao) return;
+
+    await supabaseClient.from("ranking").insert({
+        nome,
+        pontuacao
+    });
+
+    document.getElementById("nome").value = "";
+    document.getElementById("pontuacao").value = "";
+
+    carregar();
+}
+
+/* EDITAR */
+async function editar(id, nome, pontuacao) {
+    const dados = {};
+    if (nome !== null) dados.nome = nome;
+    if (pontuacao !== null) dados.pontuacao = pontuacao;
+
+    await supabaseClient
+        .from("ranking")
+        .update(dados)
+        .eq("id", id);
+
+    carregar();
+}
+
+/* EXCLUIR */
+async function excluir(id) {
+    await supabaseClient
+        .from("ranking")
+        .delete()
+        .eq("id", id);
+
+    carregar();
+}
+
+carregar();
+</script>
+
+</body>
+</html>
