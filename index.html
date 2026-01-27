@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Tabela de Classificação</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <style>
 body {
     background: #111;
@@ -58,10 +60,47 @@ button:hover {
     max-width: 100%;
     height: auto;
 }
+
+body {
+    background: #000;
+    color: #0f0;
+    font-family: 'Press Start 2P', monospace;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    color: #ff0;
+    font-size: 14px;
+    padding: 12px;
+    border-bottom: 2px solid #0f0;
+    text-align: center;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+}
+
+
+td input {
+    background: transparent;
+    border: none;
+    color: #0f0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 24px;
+    text-align: center;
+}
+
 </style>
 
 <!-- BIBLIOTECA DO SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
@@ -72,15 +111,7 @@ button:hover {
 <p>Regras: Configurações padrão.</p>
 <p>pontuações válidas até dia 08/02</p>
 <br></br>
-<br></br>
 
-<div>
-    Adicionar do Piloto:
-    <input id="nome">
-    Pontuação:
-    <input id="pontuacao" type="number">
-    <button onclick="adicionar()">Adicionar</button>
-</div>
 
 <h1>RANKING</h1>
     
@@ -94,6 +125,18 @@ button:hover {
     </thead>
     <tbody id="tabela"></tbody>
 </table>
+
+<br></br>
+<br></br>
+
+<div>
+    Adicionar do Piloto:
+    <input id="nome">
+    Pontuação:
+    <input id="pontuacao" type="number">
+    <button onclick="adicionar()">Adicionar</button>
+</div>
+
 
 <script>
 /* CONFIGURAÇÃO DO SUPABASE */
@@ -186,7 +229,6 @@ carregar();
 </body>
 
 </html>
-
 
 
 
